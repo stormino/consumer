@@ -19,12 +19,12 @@ public class SensorDataKafkaSender extends SensorDataAbstractSender {
     String topicName;
 
     @Autowired
-    private KafkaTemplate<String, SensorData> sensorDataKafkaTemplate;
+    private KafkaTemplate<String, List<SensorData>> sensorDataKafkaTemplate;
 
     @Override
     protected void sendLogic(List<SensorData> sensorData) throws SensorDataSenderException {
 
         log.info("Sending sensor data to ingestion service(s) [size={}]", sensorData.size());
-        sensorData.forEach(item -> sensorDataKafkaTemplate.send(topicName, item));
+        sensorDataKafkaTemplate.send(topicName, sensorData);
     }
 }
